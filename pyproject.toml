@@ -1,0 +1,29 @@
+[project]
+name = "llm-tools-quickjs"
+version = "0.1"
+description = "JavaScript execution as a tool for LLM"
+readme = "README.md"
+authors = [{name = "Simon Willison"}]
+license = "Apache-2.0"
+classifiers = []
+requires-python = ">=3.9"
+dependencies = [
+    "llm>=0.26a0",
+    "quickjs"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/simonw/llm-tools-quickjs"
+Changelog = "https://github.com/simonw/llm-tools-quickjs/releases"
+Issues = "https://github.com/simonw/llm-tools-quickjs/issues"
+CI = "https://github.com/simonw/llm-tools-quickjs/actions"
+
+[project.entry-points.llm]
+llm_tools_quickjs = "llm_tools_quickjs"
+
+[project.optional-dependencies]
+test = ["pytest", "llm-echo>=0.3a1"]
