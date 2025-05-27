@@ -82,6 +82,31 @@ Here is a 40 character wide Mandelbrot set visualization in text form using Java
 If you'd like, I can provide the JavaScript code used to generate this.
 ````
 
+## Function alternative
+
+The `QuickJS` tool is a Toolbox - it persists state in between calls.
+
+This plugin also provides a function variant with no persisted state. That can be used like this:
+
+```python
+llm -T quickjs 'Calculate 123 * 98742' --td
+```
+
+Or in Python like this:
+```python
+import llm
+from llm_tools_quickjs import quickjs
+
+model = llm.get_model("gpt-4.1-mini")
+
+chain = model.chain(
+    "Draw a 40 character wide mandelbrot with JavaScript",
+    tools=[quickjs]
+)
+print(chain.text())
+```
+Some models [that have trouble](https://github.com/simonw/llm/issues/1105) with class-based tools may work better with the function variant.
+
 ## Development
 
 To set up this plugin locally, first checkout the code. Then create a new virtual environment:
