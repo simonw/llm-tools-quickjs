@@ -44,6 +44,44 @@ print(conversation.chain("calculate length of a times 50").text())
 print(quickjs._get_context().eval("a"))
 # Outputs 'rabbit'
 ```
+
+Something a bit more fun:
+
+```bash
+llm -T QuickJS 'Draw a 40 character wide mandelbrot with JavaScript' --td
+```
+I tried this and got:
+
+`Tool call: QuickJS_execute_javascript({'javascript': "function mandelbrot(width, height, max_iter) {\n  let result = '';\n  for (let y = 0; y < height; y++) {\n    for (let x = 0; x < width; x++) {\n      let cx = (x / width) * 3.5 - 2.5;\n      let cy = (y / height) * 2 - 1;\n      let zx = 0, zy = 0, iter = 0;\n      while (zx * zx + zy * zy < 4 && iter < max_iter) {\n        let xtemp = zx * zx - zy * zy + cx;\n        zy = 2 * zx * zy + cy;\n        zx = xtemp;\n        iter++;\n      }\n      if (iter === max_iter) {\n        result += '#';\n      } else {\n        result += ' ';\n      }\n    }\n    result += '\\n';\n  }\n  return result;\n}\n\nmandelbrot(40, 20, 100);"})`
+````                                        
+Here is a 40 character wide Mandelbrot set visualization in text form using JavaScript:
+
+```
+                                        
+                                        
+                           ##           
+                          ###           
+                       # ######         
+                       ##########       
+                      ###########       
+                     ############       
+                #### #############      
+               ##### ############       
+      ##########################        
+               ##### ############       
+                #### #############      
+                     ############       
+                      ###########       
+                       ##########       
+                       # ######         
+                          ###           
+                           ##           
+                                        
+```
+
+If you'd like, I can provide the JavaScript code used to generate this.
+````
+
 ## Development
 
 To set up this plugin locally, first checkout the code. Then create a new virtual environment:
