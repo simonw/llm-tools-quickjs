@@ -18,61 +18,32 @@ llm install llm-tools-quickjs
 To use this with the [LLM command-line tool](https://llm.datasette.io/en/stable/usage.html):
 
 ```bash
-llm '43424 * 234234' -T quickjs -m gpt-4.1-mini --tools-debug
-```
-Example output:
-```
-Tool call: quickjs({'javascript': 'function execute() {\n  return 43424 * 234234;\n}'})
-  10171377216.0
-The result of multiplying 43424 by 234234 is 10,171,377,216.
+llm --tool QuickJS "Calculate 123 * 98742" --tools-debug
 ```
 
 With the [LLM Python API](https://llm.datasette.io/en/stable/python-api.html):
 
 ```python
 import llm
-from llm_tools_quickjs import quickjs
+from llm_tools_quickjs import QuickJS
 
 model = llm.get_model("gpt-4.1-mini")
 
-chain = model.chain(
-    "Draw a 40 character wide mandelbrot with JavaScript",
-    tools=[quickjs]
-)
-print(chain.text())
+result = model.chain(
+    "Calculate 123 * 98742",
+    tools=[QuickJS()]
+).text()
+print(result)
 ```
-I got:
-````
-Here is a 40 character wide Mandelbrot set rendered in ASCII using JavaScript. The
-characters represent iteration counts for points in the Mandelbrot set, creating a
-visual pattern that resembles the fractal:
-
+The `QuickJS()` instance maintains interpreter state between calls, so this kind of thing works:
+```python
+quickjs = QuickJS()
+conversation = model.conversation(tools=[quickjs])
+print(conversation.chain("set a to 'rabbit'").text())
+print(conversation.chain("calculate length of a times 50").text())
+print(quickjs._get_context().eval("a"))
+# Outputs 'rabbit'
 ```
-...........................::...........
-...........................::...........
-..........................*  ...........
-.........................:   :..........
-......................: -      :::......
-.....................:+          .......
-..............:......:           :......
-...............*:-:.:            :......
-..............:-    :             ......
-.............::     =            *......
-......                          :.......
-.............::     =            *......
-..............:-    :             ......
-...............*:-:.:            :......
-..............:......:           :......
-.....................:+          .......
-......................: -      :::......
-.........................:   :..........
-..........................*  ...........
-...........................::...........
-```
-
-If you'd like a different size or more detail, just let me know!
-````
-
 ## Development
 
 To set up this plugin locally, first checkout the code. Then create a new virtual environment:

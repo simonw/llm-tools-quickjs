@@ -1,6 +1,6 @@
 import llm
 import json
-from llm_tools_quickjs import quickjs
+from llm_tools_quickjs import QuickJS
 
 
 def test_tool():
@@ -9,19 +9,27 @@ def test_tool():
     function execute() {
         return "hello: " + (45 * 16);
     }
+    execute()
     """
     chain_response = model.chain(
         json.dumps(
             {
                 "tool_calls": [
-                    {"name": "quickjs", "arguments": {"javascript": code}}
+                    {
+                        "name": "QuickJS_execute_javascript",
+                        "arguments": {"javascript": code},
+                    }
                 ]
             }
         ),
-        tools=[quickjs],
+        tools=[QuickJS()],
     )
     responses = list(chain_response.responses())
     tool_results = json.loads(responses[-1].text())["tool_results"]
     assert tool_results == [
-        {"name": "quickjs", "output": "hello: 720", "tool_call_id": None}
+        {
+            "name": "QuickJS_execute_javascript",
+            "output": "hello: 720",
+            "tool_call_id": None,
+        }
     ]
